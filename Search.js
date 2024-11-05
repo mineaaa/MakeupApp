@@ -1,14 +1,26 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { TextInput, Button, Text, IconButton } from "react-native-paper";
+import ProductList from "./components/productList";
+import FetchProducts from "./productApi";
 
 export default function Search() {
 
     const [productType, setProductType] = useState('');
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const handleSearch = () => {
         setLoading(true);
+        FetchProducts(productType)
+            .then(data => {
+                setProducts(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error("Error fetching products:", error);
+                setLoading(false);
+            });
     }
 
     return (
@@ -27,6 +39,10 @@ export default function Search() {
                 onPress={handleSearch}>
                 Search
             </Button>
+            {loading ? (
+                <ActivityIndicator size="large" style={{ marginTop: 20 }} />
+            ) : (
+                <ProductList products={products} />)}
 
 
         </View>
@@ -37,7 +53,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 40,
-        backgroundColor: '#fff',
+        backgroundColor: '#ffecf2',
         alignItems: 'center',
         justifyContent: 'center',
     },
