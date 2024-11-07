@@ -1,23 +1,31 @@
 import { View, FlatList, StyleSheet } from "react-native";
 import { Text, IconButton, Card } from "react-native-paper";
 
-export default function ProductList(props) {
+export default function ProductList({ products, navigation }) {
     return (
         <FlatList
-            data={props.products}
+            data={products}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
                 <Card style={styles.listItem}>
                     <Card.Cover
                         source={{ uri: item.image_link }}
                         style={styles.image}
-                        resizeMode="cover" />
+                        resizeMode="cover"
+                    />
                     <Card.Title
                         title={item.name}
                         titleNumberOfLines={2}
                     />
                     <Card.Actions>
-                        <IconButton icon="cards-heart-outline" onPress={() => {/* lemppariksi lisäämisen metodi tulee tähän */ }} />
+                        <IconButton
+                            icon="cards-heart-outline"
+                            onPress={() => {/*lemppariksi lisäämisen metodi tulee tähän*/ }}
+                        />
+                        <IconButton
+                            icon="information-outline"
+                            onPress={() => navigation.navigate("ProductInformation", { makeupProduct: item })}
+                        />
                     </Card.Actions>
                 </Card>
             )}

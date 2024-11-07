@@ -3,11 +3,14 @@ import { StyleSheet } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import Home from './Home';
 import Search from './Search';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import ProductInformation from './components/ProductInformation';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
@@ -24,7 +27,6 @@ export default function App() {
                 iconName = 'search';
               }
 
-
               return <Ionicons name={iconName} size={size} color={color} />;
             },
             tabBarActiveTintColor: 'pink',
@@ -32,17 +34,26 @@ export default function App() {
           })}
         >
           <Tab.Screen name="Home" component={Home} />
-          <Tab.Screen name="Search" component={Search} />
+          <Tab.Screen
+            name="Search"
+            component={() => (
+              <Stack.Navigator>
+                <Stack.Screen
+                  name="Back"
+                  component={Search}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ProductInformation"
+                  component={ProductInformation}
+                  options={{ title: 'Product Details' }}
+                />
+              </Stack.Navigator>
+            )}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </PaperProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

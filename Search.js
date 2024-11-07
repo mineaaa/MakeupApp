@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
-import { TextInput, Button, Text, IconButton } from "react-native-paper";
+import { TextInput, Button, Text } from "react-native-paper";
 import ProductList from "./components/productList";
 import FetchProducts from "./productApi";
 
-export default function Search() {
+export default function Search({ navigation }) {
 
     const [productType, setProductType] = useState('');
     const [products, setProducts] = useState([]);
@@ -42,7 +42,7 @@ export default function Search() {
             {loading ? (
                 <ActivityIndicator size="large" style={{ marginTop: 20 }} />
             ) : (
-                <ProductList products={products} />)}
+                <ProductList products={products} navigation={navigation} />)}
 
 
         </View>
